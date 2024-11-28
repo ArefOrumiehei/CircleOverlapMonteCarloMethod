@@ -25,8 +25,7 @@ This repository contains a project to estimate and calculate the overlap area of
 ---
 
 ## Project Structure
-
-
+```
 ├── CircleOverlapEstimator(MonteCarloMethod).cpp  # Monte Carlo method implementation in C++
 ├── CircleOverlapEstimator.cpp                   # Exact computation in C++
 ├── index.html                                   # Interactive visualization of Monte Carlo simulation
@@ -67,28 +66,37 @@ This repository contains a project to estimate and calculate the overlap area of
 1. Generate random points within a bounding rectangle.
 2. Check if each point lies inside both circles.
 3. Estimate overlap area using:
-   ![Monte Carlo Formula](https://latex.codecogs.com/png.latex?Overlap%20Area%20%3D%20%5Cleft%28%5Cfrac%7BPoints%20Inside%20Both%20Circles%7D%7BTotal%20Points%7D%5Cright%29%20%5Ctimes%20Bounding%20Rectangle%20Area)
-
-### Exact Computation
-
-For two circles with radii \( r_1 \) and \( r_2 \), and distance \( d \) between their centers:
-
-1. If \( d \geq r_1 + r_2 \): Circles are disjoint, overlap area = 0.
-2. If \( d \leq |r_1 - r_2| \): One circle is entirely inside the other, overlap area = area of the smaller circle.
-3. Otherwise:
-   ![Exact Formula](https://latex.codecogs.com/png.latex?Overlap%20Area%20%3D%20A_1%20%2B%20A_2)
-
-   where:
-   ![Formula A1](https://latex.codecogs.com/png.latex?A_1%20%3D%20r_1%5E2%20%5Ccos%5E%7B-1%7D%5Cleft%28%5Cfrac%7Bd%5E2%20%2B%20r_1%5E2%20-%20r_2%5E2%7D%7B2dr_1%7D%5Cright%29%20-%20%5Cfrac%7B%5Csqrt%7B%28-d%20%2B%20r_1%20%2B%20r_2%29%28d%20%2B%20r_1%20-%20r_2%29%28d%20-%20r_1%20%2B%20r_2%29%28d%20%2B%20r_1%20%2B%20r_2%29%7D%7D%7B2%7D)
-
-   ![Formula A2](https://latex.codecogs.com/png.latex?A_2%20%3D%20r_2%5E2%20%5Ccos%5E%7B-1%7D%5Cleft%28%5Cfrac%7Bd%5E2%20%2B%20r_2%5E2%20-%20r_1%5E2%7D%7B2dr_2%7D%5Cright%29)
+   ```
+   Overlap Area = (Points Inside Both Circles / Total Points) * Bounding Rectangle Area
+   ```
 
 ---
 
-## Demo
+### Exact Computation
 
-### Monte Carlo Visualization
-![Monte Carlo Visualization Screenshot](https://via.placeholder.com/600x400?text=Monte+Carlo+Visualization)
+For two circles with radii `r1` and `r2`, and distance `d` between their centers:
+
+1. **Case 1: Circles are disjoint (`d >= r1 + r2`)**
+   ```
+   Overlap Area = 0
+   ```
+
+2. **Case 2: One circle is inside the other (`d <= |r1 - r2|`)**
+   ```
+   Overlap Area = Area of the smaller circle = π * min(r1^2, r2^2)
+   ```
+
+3. **Case 3: Partial overlap (`|r1 - r2| < d < r1 + r2`)**
+
+   The overlap area is computed as:
+   ```
+   Overlap Area = A1 + A2
+
+   A1 = r1^2 * cos^-1((d^2 + r1^2 - r2^2) / (2 * d * r1)) -
+        0.5 * sqrt((-d + r1 + r2) * (d + r1 - r2) * (d - r1 + r2) * (d + r1 + r2))
+
+   A2 = r2^2 * cos^-1((d^2 + r2^2 - r1^2) / (2 * d * r2))
+   ```
 
 ---
 
@@ -102,9 +110,3 @@ For two circles with radii \( r_1 \) and \( r_2 \), and distance \( d \) between
 ## License
 
 This project is open-source and distributed under the MIT License. Feel free to use and modify.
-
----
-
-## Author
-
-Developed with ❤️ by [Your Name]
